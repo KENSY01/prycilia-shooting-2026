@@ -1,0 +1,389 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>PryciliaShad Photographie — Ma sélection</title>
+<style>
+  :root{
+    --brun:#8a5a3b; --brun-clair:#c8a184; --creme:#fdf8f3; --sable:#f3e7dc;
+    --texte:#3b2f2a; --doux:#7a6a61; --vert:#2e7d52; --ombre:0 2px 12px rgba(120,85,60,.10);
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  body{
+    margin:0;background:var(--creme);color:var(--texte);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    font-size:16px;line-height:1.5;padding-bottom:120px;
+  }
+  header{
+    background:var(--brun);color:#fff;padding:22px 18px 18px;text-align:center;
+  }
+  header .marque{font-size:15px;letter-spacing:3px;text-transform:uppercase;opacity:.85}
+  header .titre{font-size:21px;margin-top:6px;font-weight:600}
+  header .lieu{font-size:13px;opacity:.75;margin-top:4px}
+  main{max-width:640px;margin:0 auto;padding:18px}
+  .card{
+    background:#fff;border-radius:16px;padding:18px;margin-bottom:14px;
+    box-shadow:var(--ombre);border:1px solid #f0e4d9;
+  }
+  .card h2{font-size:17px;margin:0 0 4px;display:flex;align-items:center;gap:8px}
+  .card h2 .num{
+    background:var(--brun);color:#fff;width:24px;height:24px;border-radius:50%;
+    display:inline-flex;align-items:center;justify-content:center;font-size:13px;flex:0 0 auto;
+  }
+  .hint{font-size:13px;color:var(--doux);margin:2px 0 14px}
+  h1.bonjour{font-size:20px;margin:6px 0 2px}
+  .sub{color:var(--doux);font-size:14px;margin:0 0 18px}
+  .assmat{font-size:12px;color:var(--brun);background:var(--sable);display:inline-block;
+    padding:3px 10px;border-radius:20px;margin:2px 0 6px}
+  /* photos */
+  .photos{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;align-items:start}
+  @media(max-width:380px){.photos{grid-template-columns:repeat(2,1fr)}}
+  .photo{
+    position:relative;border-radius:12px;overflow:hidden;cursor:pointer;
+    border:3px solid #eee;background:var(--sable);
+    display:flex;align-items:center;justify-content:center;
+  }
+  .photo img{width:100%;height:auto;object-fit:contain;display:block}
+  .photo .ph{font-size:12px;color:var(--doux);text-align:center;padding:60% 6px}
+  .photo.sel{border-color:var(--vert)}
+  .photo .check{
+    position:absolute;top:6px;right:6px;width:26px;height:26px;border-radius:50%;
+    background:rgba(255,255,255,.92);border:2px solid #ccc;
+    display:flex;align-items:center;justify-content:center;font-size:15px;color:transparent;
+  }
+  .photo.sel .check{background:var(--vert);border-color:var(--vert);color:#fff}
+  .photo .lbl{
+    position:absolute;bottom:0;left:0;right:0;background:rgba(59,47,42,.72);color:#fff;
+    font-size:12px;text-align:center;padding:3px 0;
+  }
+  /* lignes produit */
+  .ligne{
+    display:flex;align-items:center;gap:10px;padding:11px 0;border-top:1px solid #f3ebe4;
+  }
+  .ligne:first-of-type{border-top:0}
+  .ligne .nom{flex:1;font-size:15px}
+  .ligne .nom small{display:block;color:var(--doux);font-size:12px;line-height:1.35;margin-top:2px}
+  .ligne .prix{font-size:14px;color:var(--brun);font-weight:600;flex:0 0 auto}
+  .stepper{display:flex;align-items:center;gap:2px;flex:0 0 auto;margin-left:6px}
+  .stepper button{
+    width:32px;height:32px;border-radius:9px;border:1px solid #e2d4c8;background:#fff;
+    font-size:18px;color:var(--brun);cursor:pointer;line-height:1;padding:0;
+  }
+  .stepper button:active{background:var(--sable)}
+  .stepper .qty{min-width:22px;text-align:center;font-weight:600;font-size:15px}
+  .qty-0{opacity:.35}
+  /* droit image */
+  .choix{
+    display:flex;gap:10px;align-items:flex-start;padding:13px;border-radius:12px;
+    border:2px solid #eee;margin-bottom:10px;cursor:pointer;background:#fff;
+  }
+  .choix.sel{border-color:var(--brun);background:#fdf6f0}
+  .choix .pastille{
+    width:20px;height:20px;border-radius:50%;border:2px solid #bbb;flex:0 0 auto;margin-top:2px;
+    display:flex;align-items:center;justify-content:center;font-size:12px;color:#fff;
+  }
+  .choix.sel .pastille{background:var(--brun);border-color:var(--brun)}
+  .choix .txt{font-size:14px}
+  .choix .txt b{display:block;margin-bottom:2px}
+  /* form */
+  label.champ{display:block;font-size:13px;color:var(--doux);margin:12px 0 4px}
+  input[type=text],input[type=tel],input[type=email]{
+    width:100%;padding:12px;font-size:16px;border:1px solid #e2d4c8;border-radius:10px;
+    background:#fff;color:var(--texte);font-family:inherit;
+  }
+  input:focus{outline:2px solid var(--brun-clair);border-color:var(--brun-clair)}
+  .err{color:#c0392b;font-size:13px;margin-top:10px;display:none}
+  /* barre total */
+  .bar{
+    position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid #eee;
+    box-shadow:0 -4px 18px rgba(120,85,60,.12);padding:12px 16px calc(12px + env(safe-area-inset-bottom));
+  }
+  .bar .inner{max-width:640px;margin:0 auto}
+  .bar .tot{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:9px}
+  .bar .tot span:first-child{font-size:14px;color:var(--doux)}
+  .bar .tot strong{font-size:24px;color:var(--brun)}
+  .btn{
+    display:flex;align-items:center;justify-content:center;gap:8px;width:100%;
+    padding:14px;border-radius:12px;border:0;font-size:16px;font-weight:600;
+    font-family:inherit;cursor:pointer;
+  }
+  .btn-wa{background:#25D366;color:#fff}
+  .btn-wa:active{background:#1ebe5a}
+  .btn-mail{background:transparent;color:var(--brun);border:1.5px solid var(--brun-clair);margin-top:8px;font-size:14px;padding:11px}
+  .pay{margin-top:14px;border-top:1px solid #f3ebe4;padding-top:12px;font-size:13px;color:var(--doux);line-height:1.6}
+  .pay summary{cursor:pointer;color:var(--brun);font-weight:600;font-size:14px}
+  .pay code{background:var(--sable);padding:2px 6px;border-radius:5px;font-size:13px;color:var(--texte)}
+  .ok{
+    background:#eaf6ef;border:1px solid #bfe3cd;color:var(--vert);padding:12px;border-radius:12px;
+    font-size:14px;margin-bottom:14px;display:none;
+  }
+  .loading,.fatal{text-align:center;padding:60px 20px;color:var(--doux)}
+  footer{text-align:center;font-size:12px;color:var(--doux);padding:10px 20px 30px}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="marque">PryciliaShad</div>
+  <div class="titre">Photographie</div>
+  <div class="lieu">Shooting Assistantes Maternelles 2026</div>
+</header>
+
+<main>
+  <div class="loading" id="loading">Chargement de vos photos…</div>
+  <div class="fatal" id="fatal" style="display:none">
+    <p><strong>Ce lien n'est pas valide.</strong></p>
+    <p>Vérifiez que vous avez ouvert le lien complet reçu par message.</p>
+  </div>
+
+  <div id="app" style="display:none">
+    <div class="ok" id="ok">Commande préparée ! Vérifiez le message avant de l'envoyer.</div>
+    <h1 class="bonjour">Bonjour, voici les photos de <span id="prenom"></span> 📸</h1>
+    <p class="assmat" id="assmatLine" style="display:none"></p>
+    <p class="sub">Sélectionnez ce qui vous plaît, le total se calcule tout seul.</p>
+
+    <section class="card">
+      <h2><span class="num">1</span> Photos numériques</h2>
+      <p class="hint" id="hintPhotos">1 photo = 12 € · les 3 photos = 30 € au lieu de 36 € · envoyées par lien sécurisé</p>
+      <div class="photos" id="photos"></div>
+    </section>
+
+    <section class="card">
+      <h2><span class="num">2</span> Pochette photos</h2>
+      <p class="hint">La pochette comprend : 1 portrait 21×28,7 · 1 photo 18×24 · 2 photos d'identité 3,5×4,5 · 2 cartes de vœux</p>
+      <div class="ligne" data-prod="pochette">
+        <div class="nom">🤎 Pochette classique<small>Le coffret complet</small></div>
+        <div class="prix">18 €</div>
+        <div class="stepper"><button data-moins>−</button><span class="qty qty-0" data-qty>0</span><button data-plus>+</button></div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2><span class="num">3</span> Produits personnalisés</h2>
+      <p class="hint">Avec la photo de <span class="prenom-inline"></span>, imprimée et personnalisée.</p>
+      <div class="ligne" data-prod="mug">
+        <div class="nom">☕ Mug personnalisé</div><div class="prix">8,50 €</div>
+        <div class="stepper"><button data-moins>−</button><span class="qty qty-0" data-qty>0</span><button data-plus>+</button></div>
+      </div>
+      <div class="ligne" data-prod="porteCle">
+        <div class="nom">🔑 Porte-clé personnalisé</div><div class="prix">7,50 €</div>
+        <div class="stepper"><button data-moins>−</button><span class="qty qty-0" data-qty>0</span><button data-plus>+</button></div>
+      </div>
+      <div class="ligne" data-prod="calPoche">
+        <div class="nom">📅 Calendrier de poche</div><div class="prix">2,50 €</div>
+        <div class="stepper"><button data-moins>−</button><span class="qty qty-0" data-qty>0</span><button data-plus>+</button></div>
+      </div>
+      <div class="ligne" data-prod="calAimante">
+        <div class="nom">🧲 Calendrier aimanté</div><div class="prix">7,50 €</div>
+        <div class="stepper"><button data-moins>−</button><span class="qty qty-0" data-qty>0</span><button data-plus>+</button></div>
+      </div>
+      <div class="ligne" data-prod="impression">
+        <div class="nom">🖼️ Impression photo 11 × 15 cm</div><div class="prix">1,50 €</div>
+        <div class="stepper"><button data-moins>−</button><span class="qty qty-0" data-qty>0</span><button data-plus>+</button></div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2><span class="num">4</span> Droit à l'image <span style="color:#c0392b;font-size:13px">obligatoire</span></h2>
+      <p class="hint">Un choix est nécessaire pour que je sache ce que je peux publier.</p>
+      <div class="choix" data-droit="oui">
+        <div class="pastille">✓</div>
+        <div class="txt"><b>J'autorise</b>la diffusion des photos de mon enfant sur internet (Instagram, TikTok, Facebook) et sur les supports de PryciliaShad Photographie.</div>
+      </div>
+      <div class="choix" data-droit="non">
+        <div class="pastille">✓</div>
+        <div class="txt"><b>Je n'autorise pas</b>la diffusion des photos de mon enfant sur internet. Les photos restent privées.</div>
+      </div>
+      <div class="err" id="err-droit">Merci de cocher une case pour le droit à l'image.</div>
+    </section>
+
+    <section class="card">
+      <h2><span class="num">5</span> Vos coordonnées</h2>
+      <label class="champ" for="nomParent">Votre nom et prénom *</label>
+      <input type="text" id="nomParent" placeholder="Ex : Marie Dupont" autocomplete="name">
+      <label class="champ" for="telParent">Votre téléphone (facultatif)</label>
+      <input type="tel" id="telParent" placeholder="06 12 34 56 78" autocomplete="tel">
+      <div class="err" id="err-nom">Merci d'indiquer votre nom.</div>
+    </section>
+
+    <details class="pay">
+      <summary>💳 Comment payer ?</summary>
+      <p>Le règlement se fait après confirmation de votre commande.</p>
+      <p><strong>Virement Wise</strong> (zone SEPA)<br>
+      Titulaire : Prycilia Pierline Gombi Malanda Moussounda<br>
+      IBAN : <code>BE23 9051 9399 8791</code><br>
+      Depuis un pays hors zone SEPA, utilisez le SWIFT/BIC : <code>TRWIBEB1XXX</code></p>
+      <p>Merci de faire vivre PryciliaShad Photographie 🤎</p>
+    </details>
+
+    <footer>PryciliaShad Photographie · 06 59 11 71 14</footer>
+  </div>
+</main>
+
+<div class="bar" id="bar" style="display:none">
+  <div class="inner">
+    <div class="tot"><span>Total de votre sélection</span><strong id="total">0 €</strong></div>
+    <button class="btn btn-wa" id="btnWa">Envoyer ma commande sur WhatsApp</button>
+    <button class="btn btn-mail" id="btnMail">Envoyer par e-mail</button>
+  </div>
+</div>
+
+<script>
+const TARIFS = { pochette:18, mug:8.5, porteCle:7.5, calPoche:2.5, calAimante:7.5, impression:1.5 };
+const NOMS_PROD = {
+  pochette:"Pochette classique", mug:"Mug personnalisé", porteCle:"Porte-clé personnalisé",
+  calPoche:"Calendrier de poche", calAimante:"Calendrier aimanté", impression:"Impression 11x15"
+};
+const WHATSAPP_NUM = "33659117114"; // 06 59 11 71 14
+const EMAIL = ""; // remplir si un e-mail doit être proposé en secours
+
+const params = new URLSearchParams(location.search);
+const code = (params.get("e") || "").trim();
+let enfant = null, photosSel = [], droit = null, qtes = {};
+
+const eur = n => n.toLocaleString("fr-FR",{minimumFractionDigits:2,maximumFractionDigits:2}).replace(",00","") + " €";
+
+function total(){
+  const n = photosSel.length;
+  const nb = enfant && enfant.photos ? enfant.photos.length : 3;
+  let t = (n === 3 && nb >= 3) ? 30 : n * 12;
+  for (const k in qtes) t += (qtes[k]||0) * TARIFS[k];
+  return t;
+}
+
+function renderPhotos(){
+  const box = document.getElementById("photos");
+  box.innerHTML = "";
+  enfant.photos.forEach((src, i) => {
+    const d = document.createElement("div");
+    d.className = "photo" + (photosSel.includes(i) ? " sel" : "");
+    d.innerHTML = `<div class="check">✓</div>
+      <div class="lbl">Photo ${i+1}</div>`;
+    const img = document.createElement("img");
+    img.alt = "Photo " + (i+1) + " de " + enfant.prenom;
+    img.src = src;
+    img.onerror = () => { img.remove(); d.insertAdjacentHTML("afterbegin",
+      `<div class="ph">Photo ${i+1}<br><small>(aperçu indisponible)</small></div>`); };
+    d.prepend(img);
+    d.onclick = () => {
+      const p = photosSel.indexOf(i);
+      if (p >= 0) photosSel.splice(p,1); else photosSel.push(i);
+      renderPhotos(); maj();
+    };
+    box.appendChild(d);
+  });
+}
+
+function maj(){
+  document.getElementById("total").textContent = eur(total());
+  document.querySelectorAll("[data-prod]").forEach(l => {
+    const q = qtes[l.dataset.prod] || 0;
+    const s = l.querySelector("[data-qty]");
+    s.textContent = q; s.className = "qty" + (q ? "" : " qty-0");
+  });
+}
+
+function init(){
+  document.getElementById("loading").style.display = "none";
+  if (!code) { document.getElementById("fatal").style.display = "block"; return; }
+  fetch("enfants.json", {cache:"no-store"})
+    .then(r => r.json())
+    .then(cfg => {
+      enfant = (cfg.enfants || []).find(e => e.code.toLowerCase() === code.toLowerCase());
+      if (!enfant) { document.getElementById("fatal").style.display = "block"; return; }
+      enfant.photos = enfant.photos && enfant.photos.length ? enfant.photos
+        : [1,2,3].map(i => "photos/" + enfant.code + "/" + i + ".jpg");
+      document.getElementById("prenom").textContent = enfant.prenom;
+      document.querySelectorAll(".prenom-inline").forEach(e => e.textContent = enfant.prenom);
+      if (enfant.assmat) {
+        const al = document.getElementById("assmatLine");
+        al.textContent = "Assistante maternelle " + enfant.assmat;
+        al.style.display = "inline-block";
+      }
+      const nb = enfant.photos.length;
+      document.getElementById("hintPhotos").textContent = (nb === 3
+        ? "1 photo = 12 € · les 3 photos = 30 € au lieu de 36 €"
+        : nb > 3
+          ? "1 photo = 12 € · 3 photos au choix = 30 € au lieu de 36 €"
+          : "1 photo = 12 €") + " · envoyées par lien sécurisé";
+      document.getElementById("app").style.display = "block";
+      document.getElementById("bar").style.display = "block";
+      renderPhotos(); maj();
+    })
+    .catch(() => { document.getElementById("loading").style.display="none";
+      document.getElementById("fatal").style.display = "block"; });
+}
+
+document.querySelectorAll("[data-prod]").forEach(l => {
+  const k = l.dataset.prod;
+  l.querySelector("[data-plus]").onclick = () => { qtes[k] = (qtes[k]||0)+1; maj(); };
+  l.querySelector("[data-moins]").onclick = () => { qtes[k] = Math.max(0,(qtes[k]||0)-1); maj(); };
+});
+
+document.querySelectorAll(".choix").forEach(c => {
+  c.onclick = () => {
+    droit = c.dataset.droit;
+    document.querySelectorAll(".choix").forEach(x => x.classList.toggle("sel", x === c));
+    document.getElementById("err-droit").style.display = "none";
+  };
+});
+
+function valider(){
+  const nom = document.getElementById("nomParent").value.trim();
+  let ok = true;
+  if (!droit) { document.getElementById("err-droit").style.display="block"; ok = false; }
+  if (!nom) { document.getElementById("err-nom").style.display="block"; ok = false; }
+  if (photosSel.length === 0 && total() === 0) {
+    alert("Sélectionnez au moins une photo ou un produit 🙂"); ok = false;
+  }
+  return ok ? {nom, tel:document.getElementById("telParent").value.trim()} : null;
+}
+
+function message(infos){
+  const L = [];
+  L.push("NOUVELLE COMMANDE — PryciliaShad Photographie");
+  L.push("Enfant : " + enfant.prenom + "  (" + enfant.code + ")");
+  L.push("Parent : " + infos.nom + (infos.tel ? " — " + infos.tel : ""));
+  L.push("");
+  if (photosSel.length) {
+    const n = photosSel.length;
+    const nb = enfant.photos.length;
+    const pack = (n === 3 && nb >= 3);
+    L.push("Photos numériques : " + photosSel.slice().sort().map(i => "photo " + (i+1)).join(", ")
+      + " → " + (pack ? "PACK 3 = 30 €" : n + " × 12 € = " + (n*12) + " €"));
+  }
+  for (const k in qtes) if (qtes[k] > 0) {
+    L.push(NOMS_PROD[k] + " ×" + qtes[k] + " = " + (qtes[k]*TARIFS[k]).toFixed(2).replace(".",",") + " €");
+  }
+  L.push("");
+  L.push("TOTAL : " + total().toFixed(2).replace(".",",") + " €");
+  L.push("");
+  L.push("Droit à l'image : " + (droit === "oui"
+    ? "OUI — autorise la diffusion sur internet"
+    : "NON — refuse la diffusion sur internet"));
+  return L.join("\n");
+}
+
+document.getElementById("btnWa").onclick = () => {
+  const infos = valider(); if (!infos) return;
+  const txt = message(infos);
+  document.getElementById("ok").style.display = "block";
+  window.open("https://wa.me/" + WHATSAPP_NUM + "?text=" + encodeURIComponent(txt), "_blank");
+};
+
+document.getElementById("btnMail").onclick = () => {
+  const infos = valider(); if (!infos) return;
+  const txt = message(infos);
+  const to = EMAIL || "";
+  const url = "mailto:" + to + "?subject=" + encodeURIComponent("Commande " + enfant.prenom)
+    + "&body=" + encodeURIComponent(txt);
+  document.getElementById("ok").style.display = "block";
+  window.location.href = url;
+};
+
+init();
+</script>
+</body>
+</html>
