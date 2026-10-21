@@ -115,6 +115,12 @@
   .pay{margin-top:14px;border-top:1px solid #f3ebe4;padding-top:12px;font-size:13px;color:var(--doux);line-height:1.6}
   .pay summary{cursor:pointer;color:var(--brun);font-weight:600;font-size:14px}
   .pay code{background:var(--sable);padding:2px 6px;border-radius:5px;font-size:13px;color:var(--texte)}
+  .pays{display:flex;flex-direction:column;gap:10px;margin:12px 0 4px}
+  .btnP{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:14px 16px;border-radius:13px;font-weight:700;font-size:15px;text-decoration:none;border:none;cursor:pointer;transition:transform .12s,box-shadow .12s;box-shadow:0 4px 14px rgba(60,40,25,.12)}
+  .btnP:active{transform:scale(.98)}
+  .btnWise{background:#9FE870;color:#163300}
+  .btnPaypal{background:#0070BA;color:#fff}
+  .montantPay{font-size:22px;font-weight:700;color:var(--brun);margin:6px 0 2px}
   .ok{
     background:#eaf6ef;border:1px solid #bfe3cd;color:var(--vert);padding:12px;border-radius:12px;
     font-size:14px;margin-bottom:14px;display:none;
@@ -208,15 +214,25 @@
       <div class="err" id="err-nom">Merci d'indiquer votre nom.</div>
     </section>
 
-    <details class="pay">
-      <summary>💳 Comment payer ?</summary>
-      <p>Le règlement se fait après confirmation de votre commande.</p>
-      <p><strong>Virement Wise</strong> (zone SEPA)<br>
-      Titulaire : Prycilia Pierline Gombi Malanda Moussounda<br>
-      IBAN : <code>BE23 9051 9399 8791</code><br>
-      Depuis un pays hors zone SEPA, utilisez le SWIFT/BIC : <code>TRWIBEB1XXX</code></p>
-      <p>Merci de faire vivre PryciliaShad Photographie 🤎</p>
-    </details>
+    <section class="card">
+      <h2><span class="num">6</span> Paiement</h2>
+      <p class="hint">Vous pouvez régler tout de suite le montant de votre sélection, ou attendre ma confirmation.</p>
+      <div class="montantPay" id="montantPay">0 €</div>
+      <div class="pays" id="pays">
+        <a class="btnP btnWise" id="btnWisePay" target="_blank" rel="noopener" style="display:none">💚 Payer par Wise</a>
+        <a class="btnP btnPaypal" id="btnPaypalPay" target="_blank" rel="noopener" style="display:none">💙 Payer par PayPal</a>
+      </div>
+      <p class="hint" id="payAucun" style="display:none">Le lien de paiement vous sera envoyé avec la confirmation de votre commande.</p>
+      <details class="pay">
+        <summary>💳 Ou par virement / coordonnées Wise</summary>
+        <p>Le règlement se fait après confirmation de votre commande.</p>
+        <p><strong>Virement Wise</strong> (zone SEPA)<br>
+        Titulaire : Prycilia Pierline Gombi Malanda Moussounda<br>
+        IBAN : <code>BE23 9051 9399 8791</code><br>
+        Depuis un pays hors zone SEPA, utilisez le SWIFT/BIC : <code>TRWIBEB1XXX</code></p>
+        <p>Merci de faire vivre PryciliaShad Photographie 🤎</p>
+      </details>
+    </section>
 
     <footer>PryciliaShad Photographie · 06 59 11 71 14</footer>
   </div>
@@ -238,6 +254,9 @@ const NOMS_PROD = {
 };
 const WHATSAPP_NUM = "33659117114"; // 06 59 11 71 14
 const EMAIL = ""; // remplir si un e-mail doit être proposé en secours
+// Liens de paiement direct — laisser vide pour masquer le bouton.
+const LIEN_WISE   = ""; // ex : https://wise.com/pay/me/pryciliashad
+const LIEN_PAYPAL = ""; // ex : https://paypal.me/pryciliashad
 
 const params = new URLSearchParams(location.search);
 const code = (params.get("e") || "").trim();
@@ -276,6 +295,20 @@ function renderPhotos(){
   });
 }
 
+function majPaiement(){
+  const t = total();
+  document.getElementById("montantPay").textContent = t > 0 ? eur(t) : "—";
+  const w = document.getElementById("btnWisePay"), p = document.getElementById("btnPaypalPay");
+  if (LIEN_WISE) { w.href = LIEN_WISE; w.style.display = "inline-flex"; } else { w.style.display = "none"; }
+  if (LIEN_PAYPAL) {
+    // PayPal.me : on ajoute le montant quand il y en a un
+    p.href = LIEN_PAYPAL.replace(/\/+$/, "") + (t > 0 ? "/" + t.toFixed(2) + "EUR" : "");
+    p.style.display = "inline-flex";
+  } else { p.style.display = "none"; }
+  document.getElementById("pays").style.display = (LIEN_WISE || LIEN_PAYPAL) ? "flex" : "none";
+  document.getElementById("payAucun").style.display = (LIEN_WISE || LIEN_PAYPAL) ? "none" : "block";
+}
+
 function maj(){
   document.getElementById("total").textContent = eur(total());
   document.querySelectorAll("[data-prod]").forEach(l => {
@@ -283,6 +316,7 @@ function maj(){
     const s = l.querySelector("[data-qty]");
     s.textContent = q; s.className = "qty" + (q ? "" : " qty-0");
   });
+  majPaiement();
 }
 
 function init(){
