@@ -58,6 +58,28 @@
     position:absolute;bottom:0;left:0;right:0;background:rgba(59,47,42,.72);color:#fff;
     font-size:12px;text-align:center;padding:3px 0;
   }
+  .photo .zoom{
+    position:absolute;top:6px;left:6px;width:28px;height:28px;border-radius:50%;
+    background:rgba(255,255,255,.92);display:flex;align-items:center;justify-content:center;
+    font-size:14px;cursor:zoom-in;z-index:2;
+  }
+  /* visionneuse plein écran */
+  .viewer{position:fixed;inset:0;background:rgba(20,14,11,.97);z-index:100;display:none;
+    align-items:center;justify-content:center;padding:14px 14px 92px}
+  .viewer.open{display:flex}
+  .viewer img{max-width:100%;max-height:100%;object-fit:contain;border-radius:8px;background:#1b1512}
+  .vClose{position:absolute;top:14px;right:14px;width:42px;height:42px;border-radius:50%;
+    border:none;background:rgba(255,255,255,.18);color:#fff;font-size:19px;cursor:pointer}
+  .vNav{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:44px;border-radius:50%;
+    border:none;background:rgba(255,255,255,.18);color:#fff;font-size:26px;line-height:1;
+    cursor:pointer;display:flex;align-items:center;justify-content:center}
+  .vPrev{left:8px}.vNext{right:8px}
+  .vBar{position:absolute;bottom:16px;left:0;right:0;display:flex;flex-direction:column;
+    align-items:center;gap:9px;padding:0 16px}
+  .vBar span{color:#fff;font-size:14px;opacity:.85}
+  .vSel{background:#fff;color:#3b2f2a;border:none;border-radius:12px;padding:12px 22px;
+    font-size:15px;font-weight:700;cursor:pointer;max-width:320px;font-family:inherit}
+  .vSel.sel{background:var(--vert);color:#fff}
   /* lignes produit */
   .ligne{
     display:flex;align-items:center;gap:10px;padding:11px 0;border-top:1px solid #f3ebe4;
@@ -259,6 +281,17 @@
   </div>
 </div>
 
+<div class="viewer" id="viewer">
+  <button class="vClose" id="vClose" aria-label="Fermer">✕</button>
+  <button class="vNav vPrev" id="vPrev" aria-label="Photo précédente">‹</button>
+  <img id="vImg" alt="Photo agrandie">
+  <button class="vNav vNext" id="vNext" aria-label="Photo suivante">›</button>
+  <div class="vBar">
+    <span id="vCompteur">Photo 1 / 1</span>
+    <button class="vSel" id="vSel">Choisir cette photo</button>
+  </div>
+</div>
+
 <script>
 let TARIFS = { pochette:18, mug:8.5, porteCle:7.5, calPoche:2.5, calAimante:7.5, impression:1.5 };
 let PRIX_PHOTO = 12, PRIX_PACK = 30, PACK_N = 3;
@@ -298,7 +331,12 @@ function renderPhotos(){
     img.src = src;
     img.onerror = () => { img.remove(); d.insertAdjacentHTML("afterbegin",
       `<div class="ph">Photo ${i+1}<br><small>(aperçu indisponible)</small></div>`); };
+    img.onclick = (e) => { e.stopPropagation(); ouvrirViewer(i); };
     d.prepend(img);
+    const zb = document.createElement("div");
+    zb.className = "zoom"; zb.textContent = "🔍"; zb.title = "Voir en grand";
+    zb.onclick = (e) => { e.stopPropagation(); ouvrirViewer(i); };
+    d.appendChild(zb);
     d.onclick = () => {
       const p = photosSel.indexOf(i);
       if (p >= 0) photosSel.splice(p,1); else photosSel.push(i);
@@ -307,6 +345,58 @@ function renderPhotos(){
     box.appendChild(d);
   });
 }
+
+let vIndex = 0;
+
+function ouvrirViewer(i){
+  if (!enfant || !enfant.photos || !enfant.photos.length) return;
+  vIndex = Math.max(0, Math.min(i, enfant.photos.length - 1));
+  majViewer();
+  document.getElementById("viewer").classList.add("open");
+  document.body.style.overflow = "hidden";
+}
+
+function fermerViewer(){
+  document.getElementById("viewer").classList.remove("open");
+  document.body.style.overflow = "";
+}
+
+function majViewer(){
+  const n = enfant.photos.length;
+  document.getElementById("vImg").src = enfant.photos[vIndex];
+  document.getElementById("vImg").alt = "Photo " + (vIndex+1) + " de " + enfant.prenom;
+  document.getElementById("vCompteur").textContent = "Photo " + (vIndex+1) + " / " + n;
+  document.getElementById("vPrev").style.display = vIndex > 0 ? "flex" : "none";
+  document.getElementById("vNext").style.display = vIndex < n-1 ? "flex" : "none";
+  const b = document.getElementById("vSel");
+  const choisi = photosSel.includes(vIndex);
+  b.textContent = choisi ? "✓ Photo choisie — retirer" : "Choisir cette photo";
+  b.classList.toggle("sel", choisi);
+}
+
+function naviguer(pas){
+  const n = enfant.photos.length;
+  const i = vIndex + pas;
+  if (i < 0 || i >= n) return;
+  vIndex = i; majViewer();
+}
+
+document.getElementById("vClose").onclick = fermerViewer;
+document.getElementById("vPrev").onclick = () => naviguer(-1);
+document.getElementById("vNext").onclick = () => naviguer(1);
+document.getElementById("viewer").onclick = (e) => { if (e.target.id === "viewer") fermerViewer(); };
+document.getElementById("vSel").onclick = () => {
+  const p = photosSel.indexOf(vIndex);
+  if (p >= 0) photosSel.splice(p,1); else photosSel.push(vIndex);
+  renderPhotos(); maj(); majViewer();
+};
+document.addEventListener("keydown", (e) => {
+  const open = document.getElementById("viewer").classList.contains("open");
+  if (!open) return;
+  if (e.key === "Escape") fermerViewer();
+  if (e.key === "ArrowLeft") naviguer(-1);
+  if (e.key === "ArrowRight") naviguer(1);
+});
 
 function majPaiement(){
   const t = total();
