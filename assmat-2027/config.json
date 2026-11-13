@@ -15,7 +15,7 @@
   },
   "paiement": {
     "paypal": "https://www.paypal.me/MalandaPrycilia",
-    "revolut": "",
+    "revolut": "https://revolut.me/prycile9ph",
     "titulaire": "Prycilia Malanda",
     "iban": "FR76 2823 3000 0141 6263 0973 893",
     "swift": "REVOFRP2",
