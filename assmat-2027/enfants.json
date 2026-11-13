@@ -30,6 +30,15 @@
         "photos/emma-ab70/2.jpg",
         "photos/emma-ab70/3.jpg"
       ]
+    },
+    {
+      "prenom": "Lara",
+      "code": "lara-3ec4",
+      "photos": [
+        "photos/lara-3ec4/1.jpg",
+        "photos/lara-3ec4/2.jpg",
+        "photos/lara-3ec4/3.jpg"
+      ]
     }
   ]
 }
