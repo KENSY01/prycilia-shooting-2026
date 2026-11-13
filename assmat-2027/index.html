@@ -64,6 +64,14 @@
     font-size:14px;cursor:zoom-in;z-index:2;
   }
   /* visionneuse plein écran */
+  .qrBox{text-align:center;margin:14px 0 10px}
+  .qrBox img{width:170px;height:170px;background:#fff;padding:8px;border-radius:12px;
+    border:1px solid #f0e6dd}
+  .qrBox small{display:block;color:var(--doux);font-size:12px;margin-top:6px;line-height:1.4}
+  .btnCopier{display:block;width:100%;margin-top:6px;background:var(--sable);color:var(--brun);
+    border:1px solid #e7d9cc;border-radius:12px;padding:12px;font-size:14px;font-weight:600;
+    cursor:pointer;font-family:inherit}
+  .btnCopier.ok{background:var(--vert);color:#fff;border-color:var(--vert)}
   .viewer{position:fixed;inset:0;background:rgba(20,14,11,.97);z-index:100;display:none;
     align-items:center;justify-content:center;padding:14px 14px 92px}
   .viewer.open{display:flex}
@@ -264,6 +272,11 @@
         IBAN : <code id="payIban">FR76 2823 3000 0141 6263 0973 893</code><br>
         Depuis un pays hors zone SEPA, utilisez le BIC : <code id="paySwift">REVOFRP2</code><br>
         Banque : <span id="payBanque">Revolut Bank UAB — 10 avenue Kléber, 75116 Paris</span></p>
+        <div class="qrBox">
+          <img src="qr-revolut.png" alt="QR code virement Revolut">
+          <small>Scannez ce QR code avec l'application de votre banque : le virement est prérempli.</small>
+        </div>
+        <button type="button" class="btnCopier" id="btnCopierIban">📋 Copier l'IBAN</button>
         <p>Merci de faire vivre PryciliaShad Photographie 🤎</p>
       </details>
     </section>
@@ -384,6 +397,7 @@ document.getElementById("vClose").onclick = fermerViewer;
 document.getElementById("vPrev").onclick = () => naviguer(-1);
 document.getElementById("vNext").onclick = () => naviguer(1);
 document.getElementById("viewer").onclick = (e) => { if (e.target.id === "viewer") fermerViewer(); };
+document.getElementById("btnCopierIban").onclick = copierIban;
 document.getElementById("vSel").onclick = () => {
   const p = photosSel.indexOf(vIndex);
   if (p >= 0) photosSel.splice(p,1); else photosSel.push(vIndex);
@@ -410,6 +424,24 @@ function majPaiement(){
   const any = LIEN_PAYPAL || LIEN_REVOLUT;
   document.getElementById("pays").style.display = any ? "flex" : "none";
   document.getElementById("payAucun").style.display = any ? "none" : "block";
+}
+
+function copierIban(){
+  const b = document.getElementById("btnCopierIban");
+  const iban = (document.getElementById("payIban").textContent || "").replace(/\s+/g, "");
+  const fini = () => { b.textContent = "✓ IBAN copié"; b.classList.add("ok");
+    setTimeout(() => { b.textContent = "📋 Copier l'IBAN"; b.classList.remove("ok"); }, 2200); };
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(iban).then(fini).catch(() => secoursCopie(iban, fini));
+  } else secoursCopie(iban, fini);
+}
+function secoursCopie(txt, fini){
+  const t = document.createElement("textarea");
+  t.value = txt; document.body.appendChild(t); t.select();
+  try { document.execCommand("copy"); fini(); } catch(e) {
+    document.getElementById("btnCopierIban").textContent = "IBAN : " + txt;
+  }
+  t.remove();
 }
 
 function renderMiniPhotos(){
