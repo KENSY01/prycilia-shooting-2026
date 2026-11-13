@@ -1,0 +1,21 @@
+{
+  "titre": "Shooting Assistantes Maternelles 2026",
+  "photo": { "prix": 12, "pack": 30, "packN": 3 },
+  "tarifs": {
+    "pochette": 18,
+    "mug": 8.5,
+    "porteCle": 7.5,
+    "calPoche": 2.5,
+    "calAimante": 7.5,
+    "impression": 1.5
+  },
+  "paiement": {
+    "paypal": "https://www.paypal.me/MalandaPrycilia",
+    "revolut": "",
+    "wise": "https://wise.com/pay/me/pryciliapierlinegombim",
+    "titulaire": "Prycilia Pierline Gombi Malanda Moussounda",
+    "iban": "BE23 9051 9399 8791",
+    "swift": "TRWIBEB1XXX",
+    "whatsapp": "33659117114"
+  }
+}

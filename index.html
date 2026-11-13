@@ -120,6 +120,13 @@
   .btnP:active{transform:scale(.98)}
   .btnWise{background:#9FE870;color:#163300}
   .btnPaypal{background:#0070BA;color:#fff}
+  .btnRevolut{background:#191C1F;color:#fff}
+  .miniPhotos{display:grid;grid-template-columns:repeat(auto-fill,minmax(88px,1fr));gap:10px;margin-top:10px}
+  .mini{position:relative;border-radius:12px;overflow:hidden;background:var(--sable);cursor:pointer;border:2.5px solid transparent;transition:border-color .15s,transform .12s}
+  .mini:active{transform:scale(.97)}
+  .mini img{display:block;width:100%;aspect-ratio:1;object-fit:cover}
+  .mini .n{position:absolute;top:6px;left:6px;background:rgba(255,255,255,.92);color:var(--brun);font-size:12px;font-weight:700;padding:2px 7px;border-radius:20px}
+  .mini.sel{border-color:var(--brun);box-shadow:0 0 0 3px rgba(120,80,50,.12)}
   .montantPay{font-size:22px;font-weight:700;color:var(--brun);margin:6px 0 2px}
   .ok{
     background:#eaf6ef;border:1px solid #bfe3cd;color:var(--vert);padding:12px;border-radius:12px;
@@ -163,6 +170,11 @@
         <div class="nom">🤎 Pochette classique<small>Le coffret complet</small></div>
         <div class="prix">18 €</div>
         <div class="stepper"><button data-moins>−</button><span class="qty qty-0" data-qty>0</span><button data-plus>+</button></div>
+      </div>
+      <div id="pochetteChoix" style="display:none">
+        <p class="hint" style="margin-top:16px"><strong>Quelle photo pour la pochette ?</strong> Choisissez-en une seule.</p>
+        <div class="miniPhotos" id="miniPhotos"></div>
+        <div class="err" id="err-pochette">Indiquez le numéro de la photo à mettre dans la pochette.</div>
       </div>
     </section>
 
@@ -221,15 +233,16 @@
       <div class="pays" id="pays">
         <a class="btnP btnWise" id="btnWisePay" target="_blank" rel="noopener" style="display:none">💚 Payer par Wise</a>
         <a class="btnP btnPaypal" id="btnPaypalPay" target="_blank" rel="noopener" style="display:none">💙 Payer par PayPal</a>
+        <a class="btnP btnRevolut" id="btnRevolutPay" target="_blank" rel="noopener" style="display:none">💜 Payer par Revolut</a>
       </div>
       <p class="hint" id="payAucun" style="display:none">Le lien de paiement vous sera envoyé avec la confirmation de votre commande.</p>
       <details class="pay">
         <summary>💳 Ou par virement / coordonnées Wise</summary>
         <p>Le règlement se fait après confirmation de votre commande.</p>
         <p><strong>Virement Wise</strong> (zone SEPA)<br>
-        Titulaire : Prycilia Pierline Gombi Malanda Moussounda<br>
-        IBAN : <code>BE23 9051 9399 8791</code><br>
-        Depuis un pays hors zone SEPA, utilisez le SWIFT/BIC : <code>TRWIBEB1XXX</code></p>
+        Titulaire : <span id="payTitulaire">Prycilia Pierline Gombi Malanda Moussounda</span><br>
+        IBAN : <code id="payIban">BE23 9051 9399 8791</code><br>
+        Depuis un pays hors zone SEPA, utilisez le SWIFT/BIC : <code id="paySwift">TRWIBEB1XXX</code></p>
         <p>Merci de faire vivre PryciliaShad Photographie 🤎</p>
       </details>
     </section>
@@ -247,27 +260,27 @@
 </div>
 
 <script>
-const TARIFS = { pochette:18, mug:8.5, porteCle:7.5, calPoche:2.5, calAimante:7.5, impression:1.5 };
+let TARIFS = { pochette:18, mug:8.5, porteCle:7.5, calPoche:2.5, calAimante:7.5, impression:1.5 };
+let PRIX_PHOTO = 12, PRIX_PACK = 30, PACK_N = 3;
 const NOMS_PROD = {
   pochette:"Pochette classique", mug:"Mug personnalisé", porteCle:"Porte-clé personnalisé",
   calPoche:"Calendrier de poche", calAimante:"Calendrier aimanté", impression:"Impression 11x15"
 };
-const WHATSAPP_NUM = "33659117114"; // 06 59 11 71 14
-const EMAIL = ""; // remplir si un e-mail doit être proposé en secours
-// Liens de paiement direct — laisser vide pour masquer le bouton.
-const LIEN_WISE   = "https://wise.com/pay/me/pryciliapierlinegombim"; // ex : https://wise.com/pay/me/pryciliashad
-const LIEN_PAYPAL = "https://www.paypal.me/MalandaPrycilia"; // ex : https://paypal.me/pryciliashad
+let WHATSAPP_NUM = "33659117114"; // 06 59 11 71 14
+let EMAIL = ""; // remplir si un e-mail doit être proposé en secours
+// Liens de paiement lus dans config.json (vide = bouton masqué)
+let LIEN_WISE = "", LIEN_PAYPAL = "", LIEN_REVOLUT = "";
 
 const params = new URLSearchParams(location.search);
 const code = (params.get("e") || "").trim();
-let enfant = null, photosSel = [], droit = null, qtes = {};
+let enfant = null, photosSel = [], droit = null, qtes = {}, photoPochette = null, CONFIG = {};
 
 const eur = n => n.toLocaleString("fr-FR",{minimumFractionDigits:2,maximumFractionDigits:2}).replace(",00","") + " €";
 
 function total(){
   const n = photosSel.length;
   const nb = enfant && enfant.photos ? enfant.photos.length : 3;
-  let t = (n === 3 && nb >= 3) ? 30 : n * 12;
+  let t = (n === PACK_N && nb >= PACK_N) ? PRIX_PACK : n * PRIX_PHOTO;
   for (const k in qtes) t += (qtes[k]||0) * TARIFS[k];
   return t;
 }
@@ -298,15 +311,47 @@ function renderPhotos(){
 function majPaiement(){
   const t = total();
   document.getElementById("montantPay").textContent = t > 0 ? eur(t) : "—";
-  const w = document.getElementById("btnWisePay"), p = document.getElementById("btnPaypalPay");
-  if (LIEN_WISE) { w.href = LIEN_WISE; w.style.display = "inline-flex"; } else { w.style.display = "none"; }
+  const w = document.getElementById("btnWisePay"),
+        p = document.getElementById("btnPaypalPay"),
+        r = document.getElementById("btnRevolutPay");
+  if (LIEN_WISE) { w.href = LIEN_WISE; w.style.display = "inline-flex"; } else w.style.display = "none";
   if (LIEN_PAYPAL) {
-    // PayPal.me : on ajoute le montant quand il y en a un
     p.href = LIEN_PAYPAL.replace(/\/+$/, "") + (t > 0 ? "/" + t.toFixed(2) + "EUR" : "");
     p.style.display = "inline-flex";
-  } else { p.style.display = "none"; }
-  document.getElementById("pays").style.display = (LIEN_WISE || LIEN_PAYPAL) ? "flex" : "none";
-  document.getElementById("payAucun").style.display = (LIEN_WISE || LIEN_PAYPAL) ? "none" : "block";
+  } else p.style.display = "none";
+  if (LIEN_REVOLUT) { r.href = LIEN_REVOLUT; r.style.display = "inline-flex"; } else r.style.display = "none";
+  const any = LIEN_WISE || LIEN_PAYPAL || LIEN_REVOLUT;
+  document.getElementById("pays").style.display = any ? "flex" : "none";
+  document.getElementById("payAucun").style.display = any ? "none" : "block";
+}
+
+function renderMiniPhotos(){
+  const box = document.getElementById("miniPhotos");
+  if (!box || !enfant) return;
+  box.innerHTML = "";
+  enfant.photos.forEach((src, i) => {
+    const d = document.createElement("div");
+    d.className = "mini" + (photoPochette === i ? " sel" : "");
+    d.innerHTML = '<span class="n">n°' + (i+1) + '</span>';
+    const img = document.createElement("img");
+    img.src = src; img.alt = "Photo " + (i+1);
+    img.onerror = () => { img.remove(); d.style.height = "88px"; };
+    d.prepend(img);
+    d.onclick = () => {
+      photoPochette = i;
+      document.getElementById("err-pochette").style.display = "none";
+      renderMiniPhotos();
+    };
+    box.appendChild(d);
+  });
+}
+
+function majPochette(){
+  const bloc = document.getElementById("pochetteChoix");
+  const besoin = (qtes.pochette || 0) > 0;
+  bloc.style.display = besoin ? "block" : "none";
+  if (!besoin) { photoPochette = null; document.getElementById("err-pochette").style.display = "none"; }
+  else renderMiniPhotos();
 }
 
 function maj(){
@@ -315,17 +360,46 @@ function maj(){
     const q = qtes[l.dataset.prod] || 0;
     const s = l.querySelector("[data-qty]");
     s.textContent = q; s.className = "qty" + (q ? "" : " qty-0");
+    const pr = l.querySelector(".prix");
+    if (pr && TARIFS[l.dataset.prod] != null) pr.textContent = eur(TARIFS[l.dataset.prod]);
   });
+  majPochette();
   majPaiement();
+}
+
+function appliquerConfig(cfg){
+  CONFIG = cfg || {};
+  if (CONFIG.tarifs) TARIFS = Object.assign({}, TARIFS, CONFIG.tarifs);
+  if (CONFIG.photo) {
+    if (CONFIG.photo.prix != null) PRIX_PHOTO = CONFIG.photo.prix;
+    if (CONFIG.photo.pack != null) PRIX_PACK = CONFIG.photo.pack;
+    if (CONFIG.photo.packN != null) PACK_N = CONFIG.photo.packN;
+  }
+  const pay = CONFIG.paiement || {};
+  LIEN_WISE = pay.wise || "";
+  LIEN_PAYPAL = pay.paypal || "";
+  LIEN_REVOLUT = pay.revolut || "";
+  if (pay.whatsapp) WHATSAPP_NUM = pay.whatsapp;
+  if (CONFIG.titre) { const el = document.querySelector(".lieu"); if (el) el.textContent = CONFIG.titre; }
+  const titu = document.getElementById("payTitulaire"),
+        iban = document.getElementById("payIban"),
+        swift = document.getElementById("paySwift");
+  if (titu && pay.titulaire) titu.textContent = pay.titulaire;
+  if (iban && pay.iban) iban.textContent = pay.iban;
+  if (swift && pay.swift) swift.textContent = pay.swift;
 }
 
 function init(){
   document.getElementById("loading").style.display = "none";
   if (!code) { document.getElementById("fatal").style.display = "block"; return; }
-  fetch("enfants.json", {cache:"no-store"})
-    .then(r => r.json())
-    .then(cfg => {
-      enfant = (cfg.enfants || []).find(e => e.code.toLowerCase() === code.toLowerCase());
+  Promise.all([
+    fetch("config.json", {cache:"no-store"}).then(r => r.ok ? r.json() : {}).catch(() => ({})),
+    fetch("enfants.json", {cache:"no-store"}).then(r => r.json())
+  ])
+    .then(([cfg, data]) => {
+      appliquerConfig(cfg);
+      const liste = data.enfants || (Array.isArray(data) ? data : []);
+      enfant = liste.find(e => e.code.toLowerCase() === code.toLowerCase());
       if (!enfant) { document.getElementById("fatal").style.display = "block"; return; }
       enfant.photos = enfant.photos && enfant.photos.length ? enfant.photos
         : [1,2,3].map(i => "photos/" + enfant.code + "/" + i + ".jpg");
@@ -336,18 +410,20 @@ function init(){
         al.textContent = "Assistante maternelle " + enfant.assmat;
         al.style.display = "inline-block";
       }
-      const nb = enfant.photos.length;
-      document.getElementById("hintPhotos").textContent = (nb === 3
-        ? "1 photo = 12 € · les 3 photos = 30 € au lieu de 36 €"
-        : nb > 3
-          ? "1 photo = 12 € · 3 photos au choix = 30 € au lieu de 36 €"
-          : "1 photo = 12 €") + " · envoyées par lien sécurisé";
+      const nb = enfant.photos.length, p1 = eur(PRIX_PHOTO), p3 = eur(PRIX_PHOTO * PACK_N);
+      document.getElementById("hintPhotos").textContent = (nb === PACK_N
+        ? "1 photo = " + p1 + " · les " + PACK_N + " photos = " + eur(PRIX_PACK) + " au lieu de " + p3
+        : nb > PACK_N
+          ? "1 photo = " + p1 + " · " + PACK_N + " photos au choix = " + eur(PRIX_PACK) + " au lieu de " + p3
+          : "1 photo = " + p1) + " · envoyées par lien sécurisé";
       document.getElementById("app").style.display = "block";
       document.getElementById("bar").style.display = "block";
       renderPhotos(); maj();
     })
-    .catch(() => { document.getElementById("loading").style.display="none";
-      document.getElementById("fatal").style.display = "block"; });
+    .catch(() => {
+      document.getElementById("loading").style.display = "none";
+      document.getElementById("fatal").style.display = "block";
+    });
 }
 
 document.querySelectorAll("[data-prod]").forEach(l => {
@@ -369,6 +445,11 @@ function valider(){
   let ok = true;
   if (!droit) { document.getElementById("err-droit").style.display="block"; ok = false; }
   if (!nom) { document.getElementById("err-nom").style.display="block"; ok = false; }
+  if ((qtes.pochette || 0) > 0 && photoPochette === null) {
+    document.getElementById("err-pochette").style.display = "block";
+    document.getElementById("pochetteChoix").scrollIntoView({behavior:"smooth", block:"center"});
+    ok = false;
+  }
   if (photosSel.length === 0 && total() === 0) {
     alert("Sélectionnez au moins une photo ou un produit 🙂"); ok = false;
   }
@@ -384,12 +465,15 @@ function message(infos){
   if (photosSel.length) {
     const n = photosSel.length;
     const nb = enfant.photos.length;
-    const pack = (n === 3 && nb >= 3);
+    const pack = (n === PACK_N && nb >= PACK_N);
     L.push("Photos numériques : " + photosSel.slice().sort().map(i => "photo " + (i+1)).join(", ")
-      + " → " + (pack ? "PACK 3 = 30 €" : n + " × 12 € = " + (n*12) + " €"));
+      + " → " + (pack ? "PACK " + PACK_N + " = " + PRIX_PACK + " €"
+                     : n + " × " + PRIX_PHOTO + " € = " + (n*PRIX_PHOTO) + " €"));
   }
   for (const k in qtes) if (qtes[k] > 0) {
-    L.push(NOMS_PROD[k] + " ×" + qtes[k] + " = " + (qtes[k]*TARIFS[k]).toFixed(2).replace(".",",") + " €");
+    const extra = (k === "pochette" && photoPochette !== null)
+      ? " (photo n°" + (photoPochette+1) + ")" : "";
+    L.push(NOMS_PROD[k] + " ×" + qtes[k] + " = " + (qtes[k]*TARIFS[k]).toFixed(2).replace(".",",") + " €" + extra);
   }
   L.push("");
   L.push("TOTAL : " + total().toFixed(2).replace(".",",") + " €");
