@@ -34,7 +34,7 @@ def main():
     prenoms = []
     for l in src.read_text(encoding="utf-8").splitlines():
         l = l.strip()
-        if not l:
+        if not l or l.startswith("#"):
             continue
         nom, _, assmat = [x.strip() for x in l.partition("|")]
         prenoms.append((nom, assmat or None))

@@ -1,5 +1,5 @@
 {
-  "titre": "Shooting Assistantes Maternelles 2027",
+  "titre": "Shooting Assistantes Maternelles 2026",
   "photo": {
     "prix": 12,
     "pack": 30,
@@ -16,10 +16,10 @@
   "paiement": {
     "paypal": "https://www.paypal.me/MalandaPrycilia",
     "revolut": "",
-    "wise": "https://wise.com/pay/me/pryciliapierlinegombim",
-    "titulaire": "Prycilia Pierline Gombi Malanda Moussounda",
-    "iban": "BE23 9051 9399 8791",
-    "swift": "TRWIBEB1XXX",
-    "whatsapp": "33659117114"
+    "titulaire": "Prycilia Malanda",
+    "iban": "FR76 2823 3000 0141 6263 0973 893",
+    "swift": "REVOFRP2",
+    "whatsapp": "33659117114",
+    "banque": "Revolut Bank UAB — 10 avenue Kléber, 75116 Paris"
   }
 }
