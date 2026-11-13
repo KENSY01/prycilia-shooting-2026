@@ -12,6 +12,15 @@
         "photos/aitana-126e/4.jpg",
         "photos/aitana-126e/5.jpg"
       ]
+    },
+    {
+      "prenom": "Pauline",
+      "code": "pauline-d89f",
+      "photos": [
+        "photos/pauline-d89f/1.jpg",
+        "photos/pauline-d89f/2.jpg",
+        "photos/pauline-d89f/3.jpg"
+      ]
     }
   ]
 }
