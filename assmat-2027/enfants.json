@@ -21,6 +21,15 @@
         "photos/pauline-d89f/2.jpg",
         "photos/pauline-d89f/3.jpg"
       ]
+    },
+    {
+      "prenom": "Emma",
+      "code": "emma-ab70",
+      "photos": [
+        "photos/emma-ab70/1.jpg",
+        "photos/emma-ab70/2.jpg",
+        "photos/emma-ab70/3.jpg"
+      ]
     }
   ]
 }
