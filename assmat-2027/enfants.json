@@ -99,6 +99,19 @@
         "photos/clara-02e8/4.jpg"
       ],
       "assmat": "Sidonie"
+    },
+    {
+      "prenom": "Aeris",
+      "code": "aeris-dfb9",
+      "photos": [
+        "photos/aeris-dfb9/1.jpg",
+        "photos/aeris-dfb9/2.jpg",
+        "photos/aeris-dfb9/3.jpg",
+        "photos/aeris-dfb9/4.jpg",
+        "photos/aeris-dfb9/5.jpg",
+        "photos/aeris-dfb9/6.jpg"
+      ],
+      "assmat": "Kim"
     }
   ]
 }
