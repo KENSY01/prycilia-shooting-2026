@@ -124,6 +124,16 @@
         "photos/jade-ee8f/5.jpg"
       ],
       "assmat": "Kim"
+    },
+    {
+      "prenom": "Mathis",
+      "code": "mathis-2ea2",
+      "photos": [
+        "photos/mathis-2ea2/1.jpg",
+        "photos/mathis-2ea2/2.jpg",
+        "photos/mathis-2ea2/3.jpg"
+      ],
+      "assmat": "Kim"
     }
   ]
 }
