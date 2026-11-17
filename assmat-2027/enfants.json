@@ -150,6 +150,17 @@
         "photos/iris-253d/4.jpg"
       ],
       "assmat": "Kim"
+    },
+    {
+      "prenom": "Éléa",
+      "code": "elea-6f84",
+      "photos": [
+        "photos/elea-6f84/1.jpg",
+        "photos/elea-6f84/2.jpg",
+        "photos/elea-6f84/3.jpg",
+        "photos/elea-6f84/4.jpg"
+      ],
+      "assmat": "Jiga"
     }
   ]
 }
