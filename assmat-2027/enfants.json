@@ -161,6 +161,15 @@
         "photos/elea-6f84/4.jpg"
       ],
       "assmat": "Jiga"
+    },
+    {
+      "prenom": "Kessy",
+      "code": "kessy-afca",
+      "photos": [
+        "photos/kessy-afca/1.jpg",
+        "photos/kessy-afca/2.jpg"
+      ],
+      "assmat": "Jiga"
     }
   ]
 }
