@@ -170,6 +170,17 @@
         "photos/kessy-afca/2.jpg"
       ],
       "assmat": "Jiga"
+    },
+    {
+      "prenom": "Mathieu",
+      "code": "mathieu-8529",
+      "photos": [
+        "photos/mathieu-8529/1.jpg",
+        "photos/mathieu-8529/2.jpg",
+        "photos/mathieu-8529/3.jpg",
+        "photos/mathieu-8529/4.jpg"
+      ],
+      "assmat": "Jiga"
     }
   ]
 }
