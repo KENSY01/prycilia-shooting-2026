@@ -40,6 +40,14 @@
         "photos/lara-3ec4/2.jpg",
         "photos/lara-3ec4/3.jpg"
       ]
+    },
+    {
+      "prenom": "Lucien",
+      "code": "lucien-472f",
+      "photos": [
+        "photos/lucien-472f/1.jpg"
+      ],
+      "assmat": "Jiga"
     }
   ]
 }
