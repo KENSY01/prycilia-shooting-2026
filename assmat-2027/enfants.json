@@ -65,6 +65,17 @@
         "photos/jun-193c/3.jpg"
       ],
       "assmat": "Celine"
+    },
+    {
+      "prenom": "Siara",
+      "code": "siara-f894",
+      "photos": [
+        "photos/siara-f894/1.jpg",
+        "photos/siara-f894/2.jpg",
+        "photos/siara-f894/3.jpg",
+        "photos/siara-f894/4.jpg"
+      ],
+      "assmat": "Sidonie"
     }
   ]
 }
