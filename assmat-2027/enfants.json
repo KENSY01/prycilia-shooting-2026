@@ -112,6 +112,18 @@
         "photos/aeris-dfb9/6.jpg"
       ],
       "assmat": "Kim"
+    },
+    {
+      "prenom": "Jade",
+      "code": "jade-ee8f",
+      "photos": [
+        "photos/jade-ee8f/1.jpg",
+        "photos/jade-ee8f/2.jpg",
+        "photos/jade-ee8f/3.jpg",
+        "photos/jade-ee8f/4.jpg",
+        "photos/jade-ee8f/5.jpg"
+      ],
+      "assmat": "Kim"
     }
   ]
 }
