@@ -76,6 +76,16 @@
         "photos/siara-f894/4.jpg"
       ],
       "assmat": "Sidonie"
+    },
+    {
+      "prenom": "Kassim",
+      "code": "kassim-9c75",
+      "photos": [
+        "photos/kassim-9c75/1.jpg",
+        "photos/kassim-9c75/2.jpg",
+        "photos/kassim-9c75/3.jpg"
+      ],
+      "assmat": "Sidonie"
     }
   ]
 }
