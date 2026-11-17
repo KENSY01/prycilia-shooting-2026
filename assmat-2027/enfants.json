@@ -86,6 +86,16 @@
         "photos/kassim-9c75/3.jpg"
       ],
       "assmat": "Sidonie"
+    },
+    {
+      "prenom": "Clara",
+      "code": "clara-02e8",
+      "photos": [
+        "photos/clara-02e8/1.jpg",
+        "photos/clara-02e8/2.jpg",
+        "photos/clara-02e8/3.jpg"
+      ],
+      "assmat": "Sidonie"
     }
   ]
 }
