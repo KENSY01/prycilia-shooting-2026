@@ -216,6 +216,19 @@
         "photos/chiara-ba58/2.jpg"
       ],
       "assmat": "Audrey"
+    },
+    {
+      "prenom": "Ysia",
+      "code": "ysia-0745",
+      "photos": [
+        "photos/ysia-0745/1.jpg",
+        "photos/ysia-0745/2.jpg",
+        "photos/ysia-0745/3.jpg",
+        "photos/ysia-0745/4.jpg",
+        "photos/ysia-0745/5.jpg",
+        "photos/ysia-0745/6.jpg"
+      ],
+      "assmat": "Audrey"
     }
   ]
 }
