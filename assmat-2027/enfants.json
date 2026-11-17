@@ -52,7 +52,8 @@
       "prenom": "Lucien",
       "code": "lucien-472f",
       "photos": [
-        "photos/lucien-472f/1.jpg"
+        "photos/lucien-472f/1.jpg",
+        "photos/lucien-472f/2.jpg"
       ],
       "assmat": "Jiga"
     },
@@ -158,7 +159,8 @@
         "photos/elea-6f84/1.jpg",
         "photos/elea-6f84/2.jpg",
         "photos/elea-6f84/3.jpg",
-        "photos/elea-6f84/4.jpg"
+        "photos/elea-6f84/4.jpg",
+        "photos/elea-6f84/5.jpg"
       ],
       "assmat": "Jiga"
     },
@@ -167,7 +169,8 @@
       "code": "kessy-afca",
       "photos": [
         "photos/kessy-afca/1.jpg",
-        "photos/kessy-afca/2.jpg"
+        "photos/kessy-afca/2.jpg",
+        "photos/kessy-afca/3.jpg"
       ],
       "assmat": "Jiga"
     },
@@ -178,7 +181,8 @@
         "photos/mathieu-8529/1.jpg",
         "photos/mathieu-8529/2.jpg",
         "photos/mathieu-8529/3.jpg",
-        "photos/mathieu-8529/4.jpg"
+        "photos/mathieu-8529/4.jpg",
+        "photos/mathieu-8529/5.jpg"
       ],
       "assmat": "Jiga"
     }
