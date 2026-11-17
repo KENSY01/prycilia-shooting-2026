@@ -1,6 +1,7 @@
 # Prenom | Assistante maternelle
 Aïtana
 Pauline | Celine
-Emma
-Lara
+Emma | Celine
+Lara | Celine
 Lucien | Jiga
+Jun | Celine

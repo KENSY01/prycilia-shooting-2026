@@ -21,7 +21,8 @@
         "photos/pauline-d89f/2.jpg",
         "photos/pauline-d89f/3.jpg",
         "photos/pauline-d89f/4.jpg",
-        "photos/pauline-d89f/5.jpg"
+        "photos/pauline-d89f/5.jpg",
+        "photos/pauline-d89f/6.jpg"
       ],
       "assmat": "Celine"
     },
@@ -31,8 +32,10 @@
       "photos": [
         "photos/emma-ab70/1.jpg",
         "photos/emma-ab70/2.jpg",
-        "photos/emma-ab70/3.jpg"
-      ]
+        "photos/emma-ab70/3.jpg",
+        "photos/emma-ab70/4.jpg"
+      ],
+      "assmat": "Celine"
     },
     {
       "prenom": "Lara",
@@ -40,8 +43,10 @@
       "photos": [
         "photos/lara-3ec4/1.jpg",
         "photos/lara-3ec4/2.jpg",
-        "photos/lara-3ec4/3.jpg"
-      ]
+        "photos/lara-3ec4/3.jpg",
+        "photos/lara-3ec4/4.jpg"
+      ],
+      "assmat": "Celine"
     },
     {
       "prenom": "Lucien",
@@ -50,6 +55,16 @@
         "photos/lucien-472f/1.jpg"
       ],
       "assmat": "Jiga"
+    },
+    {
+      "prenom": "Jun",
+      "code": "jun-193c",
+      "photos": [
+        "photos/jun-193c/1.jpg",
+        "photos/jun-193c/2.jpg",
+        "photos/jun-193c/3.jpg"
+      ],
+      "assmat": "Celine"
     }
   ]
 }
