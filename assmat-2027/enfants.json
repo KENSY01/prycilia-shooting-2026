@@ -136,6 +136,16 @@
         "photos/mathis-2ea2/3.jpg"
       ],
       "assmat": "Kim"
+    },
+    {
+      "prenom": "Iris",
+      "code": "iris-253d",
+      "photos": [
+        "photos/iris-253d/1.jpg",
+        "photos/iris-253d/2.jpg",
+        "photos/iris-253d/3.jpg"
+      ],
+      "assmat": "Kim"
     }
   ]
 }
