@@ -207,6 +207,15 @@
         "photos/nayane-3a4d/3.jpg"
       ],
       "assmat": "Souiki"
+    },
+    {
+      "prenom": "Chiara",
+      "code": "chiara-ba58",
+      "photos": [
+        "photos/chiara-ba58/1.jpg",
+        "photos/chiara-ba58/2.jpg"
+      ],
+      "assmat": "Audrey"
     }
   ]
 }
