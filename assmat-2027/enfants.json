@@ -229,6 +229,19 @@
         "photos/ysia-0745/6.jpg"
       ],
       "assmat": "Audrey"
+    },
+    {
+      "prenom": "Eileen",
+      "code": "eileen-5b60",
+      "photos": [
+        "photos/eileen-5b60/1.jpg",
+        "photos/eileen-5b60/2.jpg",
+        "photos/eileen-5b60/3.jpg",
+        "photos/eileen-5b60/4.jpg",
+        "photos/eileen-5b60/5.jpg",
+        "photos/eileen-5b60/6.jpg"
+      ],
+      "assmat": "Audrey"
     }
   ]
 }
