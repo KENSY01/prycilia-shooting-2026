@@ -307,6 +307,18 @@
         "photos/groupe-audrey-4-13b9/1.jpg"
       ],
       "assmat": "Audrey"
+    },
+    {
+      "prenom": "Enfants Souiki",
+      "code": "enfants-souiki-3d6f",
+      "photos": [
+        "photos/enfants-souiki-3d6f/1.jpg",
+        "photos/enfants-souiki-3d6f/2.jpg",
+        "photos/enfants-souiki-3d6f/3.jpg",
+        "photos/enfants-souiki-3d6f/4.jpg",
+        "photos/enfants-souiki-3d6f/5.jpg"
+      ],
+      "assmat": "Souiki"
     }
   ]
 }
