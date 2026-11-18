@@ -36,8 +36,11 @@ def main():
         l = l.strip()
         if not l or l.startswith("#"):
             continue
-        nom, _, assmat = [x.strip() for x in l.partition("|")]
-        prenoms.append((nom, assmat or None))
+        parts = [x.strip() for x in l.split("|")]
+        nom = parts[0]
+        assmat = parts[1] if len(parts) > 1 and parts[1] else None
+        code_force = parts[2] if len(parts) > 2 and parts[2] else None   # code imposé (3e champ)
+        prenoms.append((nom, assmat, code_force))
     ancien = {}
     jf = BASE / "enfants.json"
     if jf.exists():
@@ -49,8 +52,8 @@ def main():
 
     enfants, lignes = [], []
     EXTS = {".jpg", ".jpeg", ".png", ".webp"}
-    for p, assmat in prenoms:
-        code = ancien.get(p.lower()) or f"{slug(p)}-{secrets.token_hex(2)}"
+    for p, assmat, code_force in prenoms:
+        code = code_force or ancien.get(p.lower()) or f"{slug(p)}-{secrets.token_hex(2)}"
         d = BASE / "photos" / code
         d.mkdir(parents=True, exist_ok=True)
         trouvees = sorted((f.name for f in d.iterdir() if f.suffix.lower() in EXTS),
