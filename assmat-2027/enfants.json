@@ -177,8 +177,7 @@
         "photos/nour-548f/1.jpg",
         "photos/nour-548f/2.jpg",
         "photos/nour-548f/3.jpg",
-        "photos/nour-548f/4.jpg",
-        "photos/nour-548f/5.jpg"
+        "photos/nour-548f/4.jpg"
       ],
       "assmat": "Souiki"
     },
@@ -296,6 +295,14 @@
         "photos/groupe-audrey-e153/4.jpg"
       ],
       "assmat": "Audrey"
+    },
+    {
+      "prenom": "Groupe Souiki",
+      "code": "groupe-souiki-7c21",
+      "photos": [
+        "photos/groupe-souiki-7c21/1.jpg"
+      ],
+      "assmat": "Souiki"
     }
   ]
 }
