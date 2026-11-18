@@ -22,11 +22,8 @@ Ysia | Audrey
 Eileen | Audrey
 Alba | Audrey
 Groupe Sidonie | Sidonie
-Groupe Audrey 1 | Audrey
 Groupe Jiga | Jiga
-Groupe Audrey 2 | Audrey
-Groupe Audrey 3 | Audrey
 Groupe Kim | Kim
 Groupe Celine | Celine
-Groupe Audrey 4 | Audrey
 Enfants Souiki | Souiki
+Groupe Audrey | Audrey
